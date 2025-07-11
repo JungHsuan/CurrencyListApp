@@ -1,97 +1,140 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Currency List App
 
-# Getting Started
+A React Native application for displaying and searching cryptocurrency and fiat currency lists with intuitive filtering capabilities.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Features
 
-## Step 1: Start Metro
+- 📱 Cross-platform support (iOS & Android)
+- 💰 Display cryptocurrency and fiat currency lists
+- 🔍 Real-time search functionality with debouncing
+- 🛒 Show purchasable currency listings
+- 📊 Data management (insert, clear, filter)
+- ✨ Clean and intuitive user interface
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Project Structure
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+```
+CurrencyListApp/
+├── src/
+│   ├── components/          # React components
+│   │   ├── CurrencyListFragment.tsx
+│   │   └── Button.tsx
+│   ├── hooks/              # Custom hooks
+│   │   └── useCurrencyData.tsx
+│   ├── utils/              # Utility functions
+│   │   └── searchUtils.ts
+│   ├── types/              # TypeScript type definitions
+│   └── assets/             # Static assets
+├── __tests__/              # Test files
+├── __mocks__/              # Mock data
+└── App.tsx                 # Main application component
+```
 
-```sh
-# Using npm
-npm start
+## Getting Started
 
-# OR using Yarn
+### Prerequisites
+
+- Node.js (version 16 or higher)
+- React Native CLI
+- Android Studio (for Android development)
+- Xcode (for iOS development, macOS only)
+
+### Installation
+
+1. Clone the repository
+
+```bash
+git clone <repository-url>
+cd CurrencyListApp
+```
+
+2. Install dependencies
+
+```bash
+yarn install
+```
+
+3. iOS setup (macOS only)
+
+```bash
+cd ios
+pod install
+cd ..
+```
+
+### Running the Application
+
+#### Start Metro Server
+
+```bash
 yarn start
 ```
 
-## Step 2: Build and run your app
+#### Android
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
+```bash
 yarn android
 ```
 
-### iOS
+#### iOS
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
+```bash
 yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## Component Overview
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### App.tsx
 
-## Step 3: Modify your app
+Main application entry point featuring:
 
-Now that you have successfully run the app, let's make changes!
+- Data management buttons (clear, insert, filter)
+- Currency list display via `CurrencyListFragment`
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### CurrencyListFragment
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+Reusable currency list component with:
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+- Currency list rendering
+- Search functionality with debouncing
+- Empty state handling
+- Customizable filtering logic
 
-## Congratulations! :tada:
+### useCurrencyData Hook
 
-You've successfully run and modified your React Native App. :partying_face:
+Custom hook responsible for:
 
-### Now what?
+- Managing currency data state
+- Providing filter functions (crypto, fiat, purchasable)
+- Data insertion and clearing operations
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+## Testing
 
-# Troubleshooting
+Run the test suite:
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+```bash
+yarn test
+```
 
-# Learn More
+## API Reference
 
-To learn more about React Native, take a look at the following resources:
+### CurrencyInfo Type
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+```typescript
+interface CurrencyInfo {
+  id: string;
+  name: string;
+  symbol: string;
+  code?: string;
+  purchasable?: boolean;
+}
+```
+
+### useCurrencyData Hook Methods
+
+- `listData`: Current currency data array for the fragment
+- `clearData()`: Clear all currency data
+- `insertData()`: Insert mock currency data
+- `setDataWithCryptoList()`: Filter to show only cryptocurrencies
+- `setDataWithFiatList()`: Filter to show only fiat currencies
+- `setDataWithPurchasable()`: Filter to show only purchasable currencies
