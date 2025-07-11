@@ -147,4 +147,23 @@ describe('CurrencyListFragment Search Functionality', () => {
       expect(input.props.value).toBe('');
     });
   });
+
+  it('should clear search input when back button is pressed', async () => {
+    const { getByPlaceholderText, getByTestId } = render(
+      <CurrencyListFragment data={mockSearchData} />,
+    );
+
+    const input = getByPlaceholderText('Search Currency');
+    const backButton = getByTestId('back-search-button');
+
+    await waitFor(() => {
+      fireEvent.changeText(input, 'bit');
+      expect(input.props.value).toBe('bit');
+    });
+
+    await waitFor(() => {
+      fireEvent.press(backButton);
+      expect(input.props.value).toBe('');
+    });
+  });
 });

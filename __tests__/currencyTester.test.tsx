@@ -41,19 +41,19 @@ describe('CurrencyTester', () => {
     expect(getByTestId('count').props.children).toContain(0);
   });
 
-  it('Should show nothing after click crypto when no data is inserted', () => {
+  it('should show nothing after click crypto when no data is inserted', () => {
     const { getByTestId } = render(<CurrencyTester />);
     fireEvent.press(getByTestId('crypto'));
     expect(getByTestId('count').props.children).toContain(0);
   });
 
-  it('Should show nothing after click purchasable when no data is inserted', () => {
+  it('should show nothing after click purchasable when no data is inserted', () => {
     const { getByTestId } = render(<CurrencyTester />);
     fireEvent.press(getByTestId('purchasable'));
     expect(getByTestId('count').props.children).toContain(0);
   });
 
-  it('Should show nothing after click fiat when no data is inserted', () => {
+  it('should show nothing after click fiat when no data is inserted', () => {
     const { getByTestId } = render(<CurrencyTester />);
     fireEvent.press(getByTestId('fiat'));
     expect(getByTestId('count').props.children).toContain(0);

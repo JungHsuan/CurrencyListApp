@@ -15,6 +15,8 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
+  Image,
+  Keyboard,
 } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { CurrencyInfo } from '../types';
@@ -60,16 +62,34 @@ const SearchBar = ({
   onSearchQueryChanged: (value: string) => void;
 }) => {
   const [searchText, setSearchText] = useState('');
+
+  const cancelSearch = () => {
+    setSearchText('');
+    onSearchQueryChanged('');
+    Keyboard.dismiss();
+  };
+
   return (
     <View
       style={{
-        padding: 4,
+        paddingHorizontal: 8,
         borderRadius: 4,
         backgroundColor: '#e0e0e0',
         flexDirection: 'row',
         alignItems: 'center',
       }}
     >
+      <TouchableOpacity
+        testID="back-search-button"
+        onPress={cancelSearch}
+        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+      >
+        <Image
+          style={{ width: 20, height: 20, marginRight: 8 }}
+          source={require('../assets/left-arrow.png')}
+        />
+      </TouchableOpacity>
+
       <TextInput
         value={searchText}
         onChangeText={value => {
@@ -86,14 +106,11 @@ const SearchBar = ({
       />
       <TouchableOpacity
         testID="clear-search-button"
-        onPress={() => {
-          setSearchText('');
-          onSearchQueryChanged('');
-        }}
+        onPress={cancelSearch}
         hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         style={{ padding: 10 }}
       >
-        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>&#x2715;</Text>
+        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>&#x2715;</Text>
       </TouchableOpacity>
     </View>
   );
@@ -133,6 +150,7 @@ const CurrencyListFragment = ({ data }: { data: CurrencyInfo[] }) => {
     <View style={{ flex: 1, marginTop: 8 }}>
       <SearchBar key={searchKey} onSearchQueryChanged={debouncedSearch} />
       <FlatList
+        contentContainerStyle={{ paddingHorizontal: 4 }}
         data={filteredData}
         renderItem={({ item }) => <CurrencyItem item={item} />}
         keyExtractor={item => item.id}

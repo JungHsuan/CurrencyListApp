@@ -1,6 +1,6 @@
 import { StatusBar, StyleSheet, View } from 'react-native';
-import CurrencyListFragment from './src/components/currencyListFragment';
-import Button from './src/components/button';
+import CurrencyListFragment from './src/components/CurrencyListFragment';
+import Button from './src/components/Button';
 import useCurrencyData from './src/hooks/useCurrencyData';
 
 function App() {
