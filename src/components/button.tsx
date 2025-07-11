@@ -1,15 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, TouchableOpacityProps } from 'react-native';
 
-const Button = ({
-  content,
-  onPress,
-}: {
+type ButtonProps = {
   content: string;
   onPress: () => void;
-}) => {
+} & TouchableOpacityProps;
+
+const Button = ({ content, onPress, ...rest }: ButtonProps) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} {...rest}>
       <Text
         style={{
           fontSize: 16,

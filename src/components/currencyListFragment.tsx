@@ -45,7 +45,7 @@ const CurrencyItem = ({ item }: { item: CurrencyInfo }) => {
         }}
       >
         <Text style={{ color: '#fff' }}>
-          {item.name.charAt(0).toUpperCase() ?? ''}
+          {item.name.charAt(0).toUpperCase()}
         </Text>
       </View>
       <Text style={styles.itemText}>{item.name}</Text>
@@ -85,6 +85,7 @@ const SearchBar = ({
         placeholder="Search Currency"
       />
       <TouchableOpacity
+        testID="clear-search-button"
         onPress={() => {
           setSearchText('');
           onSearchQueryChanged('');
@@ -113,7 +114,6 @@ const CurrencyListFragment = ({ data }: { data: CurrencyInfo[] }) => {
 
   const debouncedSearch = useCallback(
     (query: string) => {
-      console.log('Searching for:', query);
       // Implement debouncing logic here
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
