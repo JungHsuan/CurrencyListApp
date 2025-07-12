@@ -150,6 +150,7 @@ const CurrencyListFragment = ({ data }: { data: CurrencyInfo[] }) => {
     <View style={{ flex: 1, marginTop: 8 }}>
       <SearchBar key={searchKey} onSearchQueryChanged={debouncedSearch} />
       <FlatList
+        scrollEventThrottle={16}
         contentContainerStyle={{ paddingHorizontal: 4 }}
         data={filteredData}
         renderItem={({ item }) => <CurrencyItem item={item} />}

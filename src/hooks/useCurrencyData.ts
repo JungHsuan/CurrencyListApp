@@ -2,13 +2,24 @@ import { useState, useCallback } from 'react';
 import { CurrencyInfo } from '../types';
 import CryptoList from '../data/crypto-list.json';
 import FiatList from '../data/fiat-list.json';
+import { Alert } from 'react-native';
 
 const useCurrencyData = () => {
   const [localDB, setLocalDB] = useState<CurrencyInfo[]>([]);
   const [listData, setListData] = useState<CurrencyInfo[]>([]);
 
   const isDataReady = (data: CurrencyInfo[]) => {
-    return data && data.length > 0;
+    if (data && data.length > 0) {
+      return true;
+    } else {
+      Alert.alert(
+        'Data Not Ready',
+        'Please insert data first.',
+        [{ text: 'OK' }],
+        { cancelable: false }
+      );
+      return false;
+    }
   };
 
   const clearData = () => {

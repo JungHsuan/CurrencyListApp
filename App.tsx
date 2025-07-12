@@ -1,5 +1,5 @@
-/* eslint-disable react-native/no-inline-styles */
-import { StatusBar, StyleSheet, SafeAreaView, View } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import CurrencyListFragment from './src/components/CurrencyListFragment';
 import Button from './src/components/Button';
 import useCurrencyData from './src/hooks/useCurrencyData';
@@ -14,14 +14,8 @@ function App() {
     setDataWithPurchasable,
   } = useCurrencyData();
   return (
-    <SafeAreaView style={{ ...styles.container }}>
-      <View
-        style={{
-          flex: 1,
-          paddingHorizontal: 16,
-          marginTop: StatusBar.currentHeight,
-        }}
-      >
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
         <StatusBar backgroundColor={'transparent'} barStyle={'dark-content'} />
         <Button content="Clear Data" onPress={clearData} />
         <Button content="Insert Data" onPress={insertData} />
@@ -32,14 +26,15 @@ function App() {
           onPress={setDataWithPurchasable}
         />
         <CurrencyListFragment data={listData} />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingHorizontal: 16,
   },
 });
 

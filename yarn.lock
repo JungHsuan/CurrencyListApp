@@ -5492,6 +5492,11 @@ react-is@^19.1.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-19.1.0.tgz#805bce321546b7e14c084989c77022351bbdd11b"
   integrity sha512-Oe56aUPnkHyyDxxkvqtd7KkdQP5uIUfHxd5XTb3wE9d/kRnZLmKbDB0GWk919tdQ+mxxPtG6EAs6RMT6i1qtHg==
 
+react-native-safe-area-context@^5.5.2:
+  version "5.5.2"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-5.5.2.tgz#a3c0e99385a45e31ef24d24358aa622cc9e1a069"
+  integrity sha512-t4YVbHa9uAGf+pHMabGrb0uHrD5ogAusSu842oikJ3YKXcYp6iB4PTGl0EZNkUIR3pCnw/CXKn42OCfhsS0JIw==
+
 react-native@0.80.1:
   version "0.80.1"
   resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.80.1.tgz#10b064b2451b606591bd789fcd5d9b59e57c5bf3"
