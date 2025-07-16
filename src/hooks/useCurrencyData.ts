@@ -16,16 +16,16 @@ const useCurrencyData = () => {
         'Data Not Ready',
         'Please insert data first.',
         [{ text: 'OK' }],
-        { cancelable: false }
+        { cancelable: false },
       );
       return false;
     }
   };
 
-  const clearData = () => {
+  const clearData = useCallback(() => {
     setLocalDB([]);
     setListData([]);
-  };
+  }, []);
 
   const insertData = () => {
     setLocalDB(CryptoList.concat(FiatList));

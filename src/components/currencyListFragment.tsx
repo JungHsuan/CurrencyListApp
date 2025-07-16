@@ -18,7 +18,7 @@ import {
   Image,
   Keyboard,
 } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { CurrencyInfo } from '../types';
 import { getSearchResult } from '../utils/searchUtils';
 
@@ -56,95 +56,112 @@ const CurrencyItem = ({ item }: { item: CurrencyInfo }) => {
   );
 };
 
-const SearchBar = ({
-  onSearchQueryChanged,
-}: {
-  onSearchQueryChanged: (value: string) => void;
-}) => {
-  const [searchText, setSearchText] = useState('');
+const SearchBar = React.memo(
+  ({
+    onSearchQueryChanged,
+  }: {
+    onSearchQueryChanged: (value: string) => void;
+  }) => {
+    const [searchText, setSearchText] = useState('');
 
-  const cancelSearch = () => {
-    setSearchText('');
-    onSearchQueryChanged('');
-    Keyboard.dismiss();
-  };
+    const cancelSearch = useCallback(() => {
+      setSearchText('');
+      onSearchQueryChanged('');
+      Keyboard.dismiss();
+    }, [onSearchQueryChanged]);
 
-  return (
-    <View
-      style={{
-        paddingHorizontal: 8,
-        borderRadius: 4,
-        backgroundColor: '#e0e0e0',
-        flexDirection: 'row',
-        alignItems: 'center',
-      }}
-    >
-      <TouchableOpacity
-        testID="back-search-button"
-        onPress={cancelSearch}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-      >
-        <Image
-          style={{ width: 20, height: 20, marginRight: 8 }}
-          source={require('../assets/left-arrow.png')}
-        />
-      </TouchableOpacity>
+    const handleTextChange = useCallback(
+      (value: string) => {
+        setSearchText(value);
+        onSearchQueryChanged(value);
+      },
+      [onSearchQueryChanged],
+    );
 
-      <TextInput
-        value={searchText}
-        onChangeText={value => {
-          setSearchText(value);
-          onSearchQueryChanged(value);
+    return (
+      <View
+        style={{
+          paddingHorizontal: 8,
+          borderRadius: 4,
+          backgroundColor: '#e0e0e0',
+          flexDirection: 'row',
+          alignItems: 'center',
         }}
-        autoCapitalize="none"
-        autoCorrect={false}
-        autoComplete="off"
-        placeholderTextColor="#888"
-        style={{ flex: 1, fontSize: 16 }}
-        numberOfLines={1}
-        placeholder="Search Currency"
-      />
-      <TouchableOpacity
-        testID="clear-search-button"
-        onPress={cancelSearch}
-        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
-        style={{ padding: 10 }}
       >
-        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>&#x2715;</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
+        <TouchableOpacity
+          testID="back-search-button"
+          onPress={cancelSearch}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+        >
+          <Image
+            style={{ width: 20, height: 20, marginRight: 8 }}
+            source={require('../assets/left-arrow.png')}
+          />
+        </TouchableOpacity>
+
+        <TextInput
+          value={searchText}
+          onChangeText={handleTextChange}
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoComplete="off"
+          placeholderTextColor="#888"
+          style={{ flex: 1, fontSize: 16 }}
+          numberOfLines={1}
+          placeholder="Search Currency"
+        />
+        <TouchableOpacity
+          testID="clear-search-button"
+          onPress={cancelSearch}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+          style={{ padding: 10 }}
+        >
+          <Text style={{ fontSize: 16, fontWeight: 'bold' }}>&#x2715;</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  },
+);
 
 const CurrencyListFragment = ({ data }: { data: CurrencyInfo[] }) => {
   const debounceTimer = React.useRef<NodeJS.Timeout | null>(null);
-  const [rawData, setRawData] = useState<CurrencyInfo[]>(data);
-  const [filteredData, setFilteredData] = useState<CurrencyInfo[]>(data);
   const [searchKey, setSearchKey] = useState<number>(0);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
+  // memoize the filtered data based on search query
+  const filteredData = useMemo(() => {
+    return getSearchResult(searchQuery, data);
+  }, [searchQuery, data]);
+
+  // clear timeout on unmount
   useEffect(() => {
-    setFilteredData(data);
-    setRawData(data);
-    // Reset search bar when data changes by updating the key
-    setSearchKey(prev => prev + 1);
-  }, [data]);
-
-  const debouncedSearch = useCallback(
-    (query: string) => {
-      // Implement debouncing logic here
+    return () => {
       if (debounceTimer.current) {
         clearTimeout(debounceTimer.current);
       }
-      debounceTimer.current = setTimeout(() => {
-        if (!query) {
-          setFilteredData(rawData);
-        } else {
-          setFilteredData(getSearchResult(query, rawData));
-        }
-      }, 500);
-    },
-    [rawData],
-  );
+    };
+  }, []);
+
+  useEffect(() => {
+    // reset search bar when data changes by updating the key
+    setSearchKey(prev => prev + 1);
+    setSearchQuery('');
+
+    // clear any existing debounce timer, when data changes
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+  }, [data]);
+
+  const debouncedSearch = useCallback((query: string) => {
+    // implement debouncing logic here
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+    debounceTimer.current = setTimeout(() => {
+      setSearchQuery(query);
+    }, 500);
+  }, []);
 
   return (
     <View style={{ flex: 1, marginTop: 8 }}>
