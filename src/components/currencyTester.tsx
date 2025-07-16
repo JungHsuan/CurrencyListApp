@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, FlatList } from 'react-native';
 import useCurrencyData from '../hooks/useCurrencyData';
-import Button from './button';
+import Button from './Button';
 
 export default function CurrencyTester() {
   const {
