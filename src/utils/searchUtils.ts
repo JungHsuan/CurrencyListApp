@@ -10,8 +10,8 @@ export const getSearchResult = (
   query: string,
   input: CurrencyInfo[],
 ): CurrencyInfo[] => {
-  if (!query || query.trim() === '') {
-    return [];
+  if (!query) {
+    return input;
   }
 
   return input.filter(item => {

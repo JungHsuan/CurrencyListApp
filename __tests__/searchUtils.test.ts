@@ -91,9 +91,9 @@ describe('getSearchResult', () => {
       expect(result).toHaveLength(0);
     });
 
-    it('should return empty array when searching for empty string', () => {
+    it('should return input when searching for empty string', () => {
       const result = getSearchResult('', mockCurrencyData);
-      expect(result).toHaveLength(0);
+      expect(result).toHaveLength(mockCurrencyData.length);
     });
 
     it('should return empty array when searching for space character', () => {
