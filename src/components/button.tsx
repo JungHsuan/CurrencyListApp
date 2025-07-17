@@ -8,7 +8,11 @@ type ButtonProps = {
 
 const Button = ({ content, onPress, ...rest }: ButtonProps) => {
   return (
-    <TouchableOpacity onPress={onPress} {...rest}>
+    <TouchableOpacity
+      style={{ opacity: rest.disabled ? 0.5 : 1 }}
+      onPress={onPress}
+      {...rest}
+    >
       <Text
         style={{
           fontSize: 16,

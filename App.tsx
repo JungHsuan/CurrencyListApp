@@ -6,6 +6,7 @@ import useCurrencyData from './src/hooks/useCurrencyData';
 
 function App() {
   const {
+    isDataReady,
     listData,
     clearData,
     insertData,
@@ -19,9 +20,18 @@ function App() {
         <StatusBar backgroundColor={'transparent'} barStyle={'dark-content'} />
         <Button content="Clear Data" onPress={clearData} />
         <Button content="Insert Data" onPress={insertData} />
-        <Button content="Show Crypto List" onPress={setDataWithCryptoList} />
-        <Button content="Show Fiat List" onPress={setDataWithFiatList} />
         <Button
+          disabled={!isDataReady}
+          content="Show Crypto List"
+          onPress={setDataWithCryptoList}
+        />
+        <Button
+          disabled={!isDataReady}
+          content="Show Fiat List"
+          onPress={setDataWithFiatList}
+        />
+        <Button
+          disabled={!isDataReady}
           content="Show Purchasable List"
           onPress={setDataWithPurchasable}
         />
